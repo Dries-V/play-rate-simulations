@@ -32,7 +32,6 @@ const main = () => {
     optimized: { requests: input.No, playrate: Ro1 },
     control: { requests: input.Nc, playrate: Rc1 }
   })
-  console.log(`Approximated:\t${prettyOutput(M1, M1_CI95)}`)
 
   const M1_CI95_per_rate = simulateRelativeImprovementCI95PerRate(
     inputPerRate.map(({ Io, No, Ic, Nc }) => ({
@@ -41,6 +40,7 @@ const main = () => {
     }))
   )
   console.log(`Realistic:   \t${prettyOutput(M1, M1_CI95_per_rate)}`)
+  console.log(`Approximation:\t${prettyOutput(M1, M1_CI95)}`)
 }
 
 main()
