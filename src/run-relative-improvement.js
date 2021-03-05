@@ -1,15 +1,11 @@
 const getTimer = require('execution-time')
 const { aggregateData } = require('./aggregate-data')
 const { aggregateDataPerRate } = require('./aggregate-data-per-rate')
-const { generateData } = require('./generate-data')
 const { prettyOutput } = require('./pretty-output')
-const { randomDataConfig } = require('./random-data')
 
 const { simulateRelativeImprovementCI95 } = require('./simulate-relative-improvement-ci95')
 
-const runRelativeImprovement = () => {
-  const config = randomDataConfig()
-  const data = generateData(config)
+const runRelativeImprovement = (data) => {
   const input = aggregateData(data)
   const inputPerRate = aggregateDataPerRate(data)
 
