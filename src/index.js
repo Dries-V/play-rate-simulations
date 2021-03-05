@@ -19,24 +19,28 @@ const main = () => {
 
   const Ro = input.Io / input.No
   const Rc = input.Ic / input.Nc
+  const R = (input.Io + input.Ic) / (input.No + input.Nc)
   const M = (Ro / Rc) - 1
 
   const rawTimer = getTimer()
   rawTimer.start()
   const { average: rawM, CI95: rawCI95 } = simulateRelativeImprovementCI95([{
     optimized: { requests: input.No, playrate: Ro },
-    control: { requests: input.Nc, playrate: Rc }
+    control: { requests: input.Nc, playrate: Rc },
+    overall: { requests: input.Io + input.Ic, playrate: R }
   }])
   const rawTime = rawTimer.stop().time
 
   const Ro1 = input.Io1 / input.No1
   const Rc1 = input.Ic1 / input.Nc1
+  const R1 = (input.Io1 + input.Ic1) / (input.No1 + input.Nc1)
   const M1 = (Ro1 / Rc1) - 1
   const approximationTimer = getTimer()
   approximationTimer.start()
   const { average: approximationM, CI95: approximationCI95 } = simulateRelativeImprovementCI95([{
     optimized: { requests: input.No, playrate: Ro1 },
-    control: { requests: input.Nc, playrate: Rc1 }
+    control: { requests: input.Nc, playrate: Rc1 },
+    overall: { requests: input.No + input.Nc, playrate: R1 }
   }])
   const approximationTime = approximationTimer.stop().time
 
@@ -45,7 +49,8 @@ const main = () => {
   const { average: realisticM, CI95: realisticCI95 } = simulateRelativeImprovementCI95(
     inputPerRate.map(({ Io, No, Ic, Nc }) => ({
       optimized: { requests: No, playrate: Io / No },
-      control: { requests: Nc, playrate: Ic / Nc }
+      control: { requests: Nc, playrate: Ic / Nc },
+      overall: { requests: No + Nc, playrate: (Io + Ic) / (No + Nc) }
     }))
   )
   const realisticTime = realisticTimer.stop().time

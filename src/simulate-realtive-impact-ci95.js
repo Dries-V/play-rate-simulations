@@ -12,22 +12,22 @@ const ITERATIONS = 1e5
  * }[]} data 
  * @param {number} iterations 
  */
-const simulateRelativeImprovementCI95 = (
+const simulateRelativeImpactCI95 = (
   data,
   iterations = ITERATIONS
 ) => {
   // Set up play rate sampling from Beta distributions
-  const sampleOptimizedPlayRate = getPlayRateFactory(data, Group.OPTIMIZED)
+  const sampleOverallPlayRate = getPlayRateFactory(data, Group.OVERALL)
   const sampleControlPlayRate = getPlayRateFactory(data, Group.CONTROL)
   
-  // Set up relative improvement sampling
-  const sampleRelativeImprovement = () =>
-    (sampleOptimizedPlayRate() / sampleControlPlayRate()) - 1
+  // Set up relative impact sampling
+  const sampleRelativeImpact = () =>
+    (sampleOverallPlayRate() / sampleControlPlayRate()) - 1
   
   // Generate samples
   const samples = []
   for (let i = 0; i < iterations; i++) {
-    samples.push(sampleRelativeImprovement())
+    samples.push(sampleRelativeImpact())
   }
 
   // Return average and CI95
@@ -40,4 +40,4 @@ const simulateRelativeImprovementCI95 = (
   return { average, CI95 }
 }
 
-module.exports = { simulateRelativeImprovementCI95 }
+module.exports = { simulateRelativeImpactCI95 }
